@@ -1,0 +1,28 @@
+{% extends "template_layout_vanilla.html" %}
+
+{% block content %}
+    <h1>PROMS Server</h1>
+    {% if activity %}
+        <h2>An Activity</h2>
+        <p><a href="{{ request.url }}">html</a> | <a href="{{ request.url + "&_format=text/turtle" }}">rdf/turtle</a></p>
+        <table class="lined">
+            <tr><th>URI:</th><td><a href="{{ activity['uri'] }}">{{ activity['uri'] }}</a></td></tr>
+            <tr><th>Label:</th><td>{{ activity['label'] }}</td></tr>
+            <tr><th>Started:</th><td>{{ activity['sat'] }}</td></tr>
+            <tr><th>Ended:</th><td>{{ activity['eat'] }}</td></tr>
+            {% if activity['waw_encoded'] is not none  %}
+                <tr><th>Was Associated With:</th><td><a href="{{ url_for('modelx.instance') + '?_uri=' + activity['waw_encoded'] }}">activity['waw_label']</a></td></tr>
+            {% endif %}
+        </table>
+
+        <h3>Alternate views</h3>
+        <p>Different view of this object are listed at its <a href="{{ request.url }}&_view=alternates">Alternate views</a> page.</p>
+
+        <h3>PROV view</h3>
+        <p>This view of this Entity shows everything from the provenance database known about this Entity, but only things according to the PROV ontology or upper contologies (RDF, RDFS, OWL). Additional facts recorded using other ontologies are not show.</p>
+        <textarea style="width:99%; height:200px;">{{ prov_data }}</textarea>
+
+    {% else %}
+        <p>No Activity information found.</p>
+    {% endif %}
+{% endblock %}

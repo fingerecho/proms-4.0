@@ -1,0 +1,8 @@
+
+[a rdfg:Graph;rdflib:storage [a rdflib:Store;rdfs:label 'IOMemory']].
+
+http://localhost:5000/reportingsystem/8f5a933e-a931-41b7-bde1-7bc0852a4bfe
+
+[a rdfg:Graph;rdflib:storage [a rdflib:Store;rdfs:label 'IOMemory']].
+
+http://localhost:5000/report/5c9e4921-eb3a-4ceb-b574-73096ef41578

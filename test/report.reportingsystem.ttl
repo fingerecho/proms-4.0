@@ -1,0 +1,6 @@
+@prefix pl: <http://placeholder.org#>.
+@prefix proms: <http://promsns.org/def/proms#>.
+@prefix rd: <http://www.w3.org/2000/01/rdf-schema#>.
+
+pl:abc123
+   a proms:ReportingSystem; rd:comment "test-lsu"@en; rd:label "test-lsu"@en.

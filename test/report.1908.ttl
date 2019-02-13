@@ -1,0 +1,43 @@
+@prefix proms: <http://promsns.org/def/proms#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://placeholder.org#8a90fd0a-f52d-4e5d-9a54-da85f38d83c4> a proms:ExternalReport ;
+    rdfs:label "NEXIS Report"^^xsd:string ;
+    proms:endingActivity <http://placeholder.org#58eff365-40c2-406b-9b9f-25c0858d9a6d> ;
+    proms:nativeId "NEXIS run #34"^^xsd:string ;
+    proms:startingActivity <http://placeholder.org#58eff365-40c2-406b-9b9f-25c0858d9a6d> ;
+    proms:wasReportedBy <http://placeholder.org#b5d762b4-ddd6-4ff2-87dc-0e35a8f8b5c0> ;
+    prov:generatedAtTime "2019-01-07T21:40:18.994279"^^xsd:dateTime .
+
+<http://fake.com/rs/NEXIS> a prov:Agent ;
+    rdfs:label "Fake NEXIS 01"^^xsd:string ;
+    prov:actedOnBehalfOf <http://pid.geoscience.gov.au/person/u15873> .
+
+<http://pid.geosceince.gov.au/dataset/1234> a prov:Entity ;
+    rdfs:label "Input Dataset 01"^^xsd:string .
+
+<http://pid.geosceince.gov.au/dataset/1f59af92-fd8e-a655-e053-12a3070aaa76> a prov:Entity ;
+    rdfs:label "Input Dataset 02"^^xsd:string .
+
+<http://pid.geosceince.gov.au/dataset/xyz> a prov:Entity ;
+    rdfs:label "Output Dataset"^^xsd:string .
+
+<http://pid.geoscience.gov.au/person/u15873> a prov:Agent ;
+    rdfs:label "Laura Stanford"^^xsd:string .
+
+<http://placeholder.org#b5d762b4-ddd6-4ff2-87dc-0e35a8f8b5c0> a proms:ReportingSystem ;
+    rdfs:label "Fake RS"^^xsd:string .
+
+<http://placeholder.org#58eff365-40c2-406b-9b9f-25c0858d9a6d> a prov:Activity ;
+    rdfs:label "NEXIS processing"^^xsd:string ;
+    prov:endedAtTime "2019-01-07T21:40:18"^^xsd:dateTime ;
+    prov:generated <http://pid.geosceince.gov.au/dataset/xyz> ;
+    prov:startedAtTime "2019-01-07T21:40:12"^^xsd:dateTime ;
+    prov:used <http://pid.geosceince.gov.au/dataset/1234>,
+        <http://pid.geosceince.gov.au/dataset/1f59af92-fd8e-a655-e053-12a3070aaa76> ;
+    prov:wasAssociatedWith <http://fake.com/rs/NEXIS> .
+

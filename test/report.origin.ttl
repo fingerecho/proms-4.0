@@ -1,0 +1,44 @@
+@prefix proms: <http://promsns.org/def/proms#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+
+<http://placeholder.org#336042fb-e53e-4630-b359-ab61c5ca9160> a proms:Report ;
+    rdfs:label "Test Report"^^xsd:string ;
+    proms:endingActivity <http://placeholder.org#809938ee-064b-40a6-9028-0b8cd0d56ccd> ;
+    proms:nativeId "abc-123"^^xsd:string ;
+    proms:startingActivity <http://placeholder.org#809938ee-064b-40a6-9028-0b8cd0d56ccd> ;
+    proms:wasReportedBy <http://localhost:5000/function/lodge-reportingsystem/XXXXXX> ;
+    prov:generatedAtTime "2018-01-01T14:00:00"^^xsd:dateTime .
+
+<http://example.org/id/dataset/44> a prov:Entity ;
+    rdfs:label "Test PROV Entity"^^xsd:string .
+
+<http://example.org/id/dataset/45> a prov:Entity ;
+    rdfs:label "Test PROMS Entity"^^xsd:string .
+
+<http://localhost:5000/function/lodge-reportingsystem/XXXXXX> a proms:ReportingSystem ;
+    rdfs:label "None"^^xsd:string .
+
+<http://placeholder.org#3d91bdba-435a-4ecd-b5b9-4f8260e9f962> a prov:Entity ;
+    rdfs:label "Test PROV output Entity"^^xsd:string .
+
+<http://placeholder.org#4212469e-d36e-48c1-bf7e-ee3569936389> a prov:Entity ;
+    rdfs:label "Geofabric SimpleFeatures WMS request"^^xsd:string .
+
+<http://placeholder.org#9de0f7c8-53be-4afc-ba90-7d4c005d3c55> a prov:Agent ;
+    rdfs:label "Edward King"^^xsd:string .
+
+<http://placeholder.org#809938ee-064b-40a6-9028-0b8cd0d56ccd> a prov:Activity ;
+    rdfs:label "Ocean Colour processing workflow"^^xsd:string ;
+    prov:endedAtTime "2018-01-01T14:00:00"^^xsd:dateTime ;
+    prov:generated <http://placeholder.org#3d91bdba-435a-4ecd-b5b9-4f8260e9f962> ;
+    prov:startedAtTime "2018-01-01T12:00:00"^^xsd:dateTime ;
+    prov:used <http://example.org/id/dataset/44>,
+        <http://example.org/id/dataset/45>,
+        <http://placeholder.org#4212469e-d36e-48c1-bf7e-ee3569936389> ;
+    prov:wasAssociatedWith <http://placeholder.org#9de0f7c8-53be-4afc-ba90-7d4c005d3c55> .
+

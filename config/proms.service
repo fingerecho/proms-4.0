@@ -1,0 +1,16 @@
+[Unit]
+Description=proms proms su yuan 
+After=syslog.target
+StartLimitInterval=200
+StartLimitBurst=200
+
+[Service]
+Type=notify
+User=root
+Group=root
+RuntimeDirectory=uwsgi
+Restart=always
+KillSignal=SIGQUIT
+StandardError=syslog
+NotifyAccess=all
+ExecStart=/bin/sh -ec "exec uwsgi --ini /srv/proms/config/uwsgi.ini --socket=/var/tmp/proms.socket --processes=24 --master --die-on-term --manage-script-name --mount /srv/proms/proms=app:app"

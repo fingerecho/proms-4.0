@@ -1,0 +1,1 @@
+curl --request POST --data @report.origin.ttl -H 'Content-Type: text/turtle' http://localhost:5000/function/lodge-report

@@ -1,0 +1,14 @@
+[Unit]
+Description=proms proms su yuan 
+After=syslog.target
+
+[Service]
+Type=notify
+User=www-data
+Group=www-data
+RuntimeDirectory=uwsgi
+Restart=always
+KillSignal=SIGQUIT
+StandardError=syslog
+NotifyAccess=all
+ExecStart=/bin/sh -ec "exec /usr/local/python3/bin/uwsgi --ini /srv/proms/uwsgi.ini --socket=/run/uwsgi/proms.socket --processes=2 --master=true --die-on-term=true --manage-script-name --mount /srv/proms/proms=app:app"

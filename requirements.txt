@@ -1,0 +1,4 @@
+flask
+rdflib
+watchdog
+rdflib-jsonld

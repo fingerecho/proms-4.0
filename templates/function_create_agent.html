@@ -1,0 +1,169 @@
+{% extends "template_layout_vanilla.html" %}
+
+{% block content %}
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}" charset="utf-8"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.datetimepicker.js') }}" charset="utf-8"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.validate.min.js') }}" charset="utf-8"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/additional-methods.min.js') }}" charset="utf-8"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/rdflib.js') }}" charset="utf-8"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/proms-client.js') }}" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery.datetimepicker.css') }}" />
+
+    <h2>Create an <em>Agent</em></h2>
+    <p>This page allows someone to create an <a class="definition" href="http://www.w3.org/ns/prov#Agent">Agent</a> allowing to which data may be attributed, actions associated and on who's behalf a <a class="definition" href="http://promsns.org/def/proms#ReportingSystem">Reportingsystem</a> may operate. From PROV: "An agent is something that bears some form of responsibility for an activity taking place".</p>
+    <p>Complete the form below to register an <em>Agent</em>. Input validation will ensure that the <em>Agent</em> registered is valid, i.e. that all the metadata required for one according to the <a class="definition" href="http://promsns.org/def/proms">PROMS ontology</a> is supplied.</p>
+    <script>
+        // jQuery onLoad function
+        $(function() {
+            // validating form inputs
+            $("#createDescription").validate({
+                errorElement: 'div',
+                rules: {
+                    uri: {
+                        url: true
+                    },
+                    actedOnBehalfOf: {
+                        url: true
+                    }
+                }
+            });
+
+            // when the "Create RDf" button is clicked...
+            $('#create-button').click(function(event) {
+                event.preventDefault();
+
+                // make the RDF for the RS
+                var repSys = new Agent(
+                    $('#label').val(),
+                    $('#comment').val(),
+                    $('#uri').val(),
+                    $('#actedOnBehalfOf').val()
+                );
+
+                //show the RDF
+                var ttl = getTurtle(repSys.getGraph());
+                $('#generated-results').val(ttl);
+                $('#generated-results').css('height', ttl.split("\n").length * 2.5 + 'ex');
+                $('#generated-results-row').show();
+                $('#lodge-button-row').show();
+                $('#create-button').html('Regenerate RDF');
+            });
+
+            // when the "Lodge RDf" button is clicked...
+            $('#lodge-button').click(function(event) {
+                event.preventDefault();
+
+                // read the turtle
+                var ttl = $('#generated-results').val();
+                if (!ttl) {
+                    $('#lodge-results').val("Please generate your RDF again.");
+                    $('#lodge-results-row').show();
+                    return
+                }
+
+                // make an AJAX request to PROMS Server's lodge-agent endpoint
+                $.ajax({
+                    type: 'POST',
+                    url: '/function/lodge-agent',
+                    data: ttl,
+                    headers: {'Content-Type': 'text/turtle'},
+                    dataType: 'text',
+                    success: function (response) {
+                        $('#lodge-results').val('Success! The URI for your Agent is:\n\n<' + response + '>');
+                    },
+                    error: function (response) {
+                        $('#lodge-results').css('height', response.responseText.split("\n").length * 2.5 + 'ex');
+                        $('#lodge-results').val('Failed: \n\n' + response.responseText);
+                    }
+                });
+                // show the lodgement results
+                $('#lodge-results-row').show();
+            });
+        });
+    </script>
+    <style>
+        .lined {
+            width: 100%;
+        }
+        .lined th {
+            width: 55%;
+        }
+        .lined th span {
+            font-size:small;
+            font-weight:normal;
+        }
+        form .error {
+            color: red;
+        }
+    </style>
+    <form id="createDescription">
+        <table class="lined">
+            <tr>
+                <td colspan="2">
+                    <h3>Agent</h3>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="label">Name</label><span style="color:red;">*</span>:<br />
+                    <span>A simple name for the <em>Agent</em>. </span>
+                </th>
+                <td>
+                    <input id="label" name="label" type="text" minlength="5" required style="width:55%" />
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="comment">Description:</label><br />
+                    <span>A simple description of the <em>Agent</em>.</span></th>
+                <td>
+                    <textarea id="comment" name="comment" style="width:98%;"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="uri">Existing URI:</label><br />
+                    <span>If this <em>Agent</em> is defined elsewhere and therefore has a URI, add it here.</span></th>
+                <td>
+                    <input id="uri" name="uri" type="text" style="width:55%" />
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="actedOnBehalfOf">Acted on behalf of:</label><br />
+                    <span>Who did this Agent act on behalf of?<br />Any other Agent already registered in this system may be chosen.</span></th>
+                <td>
+                    <select id="actedOnBehalfOf" name="actedOnBehalfOf">
+                        <option value="">choose one...</option>
+                        {%  for agent in agents %}
+                            <option value="{{ agent['uri'] }}">{{ agent['label'] }}</option>
+                        {%  endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr id="generated-button-row">
+                <td colspan="2" style="text-align:right;">
+                    <button id="create-button" style="width: 160px;">Create RDF</button>
+                </td>
+            </tr>
+            <tr id="generated-results-row" style="display:none;">
+                <td colspan="2">
+                    Your ReportingSystem in RDF (turtle):<br />
+                    <textarea id="generated-results" style="width:98%; min-height:50px;"></textarea>
+                </td>
+            </tr>
+            <tr id="lodge-button-row" style="display:none;">
+                <td colspan="2" style="text-align:right;">
+                    <button id="lodge-button" style="width: 160px;">Lodge RDF</button>
+                </td>
+            </tr>
+            <tr id="lodge-results-row" style="display:none;">
+                <td colspan="2">
+                    Results of lodging your ReportingSystem with this instance of PROMS Server:<br />
+                    <textarea id="lodge-results" style="width:98%; min-height:20px;"></textarea>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+{% endblock %}
