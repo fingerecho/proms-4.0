@@ -78,7 +78,7 @@ def test_example_data_rs_html():
     line_to_seek = '/instance?_uri=%(quoted_uri)s">System 01</a></li>' % {
         'quoted_uri': 'http%3A%2F%2Fpid.geoscience.gov.au%2Fsystem%2Fsystem-01'
     }
-    #assert line_to_seek in html
+    assert line_to_seek in html
 
 
 def test_example_data_rs_rdf():
